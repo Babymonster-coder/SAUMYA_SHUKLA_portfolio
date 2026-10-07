@@ -1,0 +1,137 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --color-purple: var(--accent-purple);
+  --color-blue: var(--accent-blue);
+  --color-cyan: var(--accent-cyan);
+  --color-pink: var(--accent-pink);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-sm: 0.4rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 0.9rem;
+  --radius-xl: 1.2rem;
+}
+
+/* Futuristic dark workspace palette */
+:root {
+  color-scheme: dark;
+  --background: oklch(0.16 0.012 275);
+  --foreground: oklch(0.96 0.005 280);
+  --card: oklch(0.21 0.015 278);
+  --card-foreground: oklch(0.96 0.005 280);
+  --muted: oklch(0.28 0.015 278);
+  --muted-foreground: oklch(0.72 0.02 280);
+  --border: oklch(1 0 0 / 12%);
+  --ring: oklch(0.7 0.14 285);
+
+  --accent-purple: oklch(0.66 0.19 300);
+  --accent-blue: oklch(0.64 0.16 258);
+  --accent-cyan: oklch(0.78 0.13 200);
+  --accent-pink: oklch(0.72 0.19 350);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--accent-purple) 45%, transparent);
+    color: white;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Glassmorphism panel surface */
+  .glass {
+    background: color-mix(in oklch, var(--card) 62%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid color-mix(in oklch, white 12%, transparent);
+    box-shadow:
+      0 24px 60px -20px rgba(0, 0, 0, 0.7),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-subtle {
+    background: color-mix(in oklch, var(--card) 45%, transparent);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid color-mix(in oklch, white 10%, transparent);
+  }
+}
+
+/* Animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes panel-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(12px) scale(0.98); }
+}
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-24px); opacity: 0; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-fade-in { animation: fade-in 0.6s ease forwards; }
+.animate-fade-out { animation: fade-out 0.5s ease forwards; }
+.animate-panel-in { animation: panel-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-panel-out { animation: panel-out 0.24s ease forwards; }
+.animate-blink { animation: blink 1s step-end infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
